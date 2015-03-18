@@ -28,19 +28,19 @@
 
 K printq(K x);
 
-static int fmt_time(char *buf, size_t size, char *str, time_t time, int adjusted)
+static void fmt_time(char *str, time_t time, int adjusted)
 {
+    static char buffer[4096];
+
     struct tm *timeinfo = localtime(&time);
     if (adjusted) timeinfo->tm_hour -= 1;
-    strftime(buf, size, str, timeinfo);
+    strftime(buffer, sizeof(buffer), str, timeinfo);
 
-    printf("%s ", buf);
+    printf("%s ", buffer);
 }
 
 static K printatom(K x)
 {
-    static char buffer[4096];
- 
     switch (xt) {
         case  -1: printf("%db", x->g); break;
         case  -4: printf("0x%02x", x->g); break;
@@ -51,16 +51,16 @@ static K printatom(K x)
         case  -9: printf("%.2f", x->f); break;
         case -10: printf("\"%c\"", x->i); break;
         case -11: printf("`%s", x->s); break;
-        case -12: fmt_time(buffer, sizeof(buffer), "%Y.%m.%dD%H:%M:%S.", ((x->j) / 8.64e13 + 10957)*8.64e4, 0); break;
+        case -12: fmt_time("%Y.%m.%dD%H:%M:%S.", ((x->j) / 8.64e13 + 10957)*8.64e4, 0); break;
         case -13: printf("%04d.%02d", (x->i)/12+2000, (x->i)%12+1); break;
-        case -14: fmt_time(buffer, sizeof(buffer), "%Y.%m.%d", ((x->i) + 10957)*8.64e4, 0); break;
-        case -15: fmt_time(buffer, sizeof(buffer), "%Y.%m.%dD%H:%M:%S", ((x->f) + 10957)*8.64e4, 0); break;
-        case -16: { int pos = fmt_time(buffer, sizeof(buffer), "%jD%H:%M:%S", (x->j)/1000000000, 1);
-                  printf(".%09lld", (x->j)%1000000000); break; }
-        case -17: fmt_time(buffer, sizeof(buffer), "%H:%M", (x->i) * 60, 1); break;
-        case -18: fmt_time(buffer, sizeof(buffer), "%H:%M:%S", x->i, 1); break;
-        case -19: { int pos = fmt_time(buffer, sizeof(buffer), "%H:%M:%S", (x->i) / 1000, 1);
-                  printf(".%03d", (x->i)%1000); break; }
+        case -14: fmt_time("%Y.%m.%d", ((x->i) + 10957)*8.64e4, 0); break;
+        case -15: fmt_time("%Y.%m.%dD%H:%M:%S", ((x->f) + 10957)*8.64e4, 0); break;
+        case -16: { fmt_time("%jD%H:%M:%S", (x->j)/1000000000, 1);
+                    printf(".%09lld", (x->j)%1000000000); break; }
+        case -17: fmt_time("%H:%M", (x->i) * 60, 1); break;
+        case -18: fmt_time("%H:%M:%S", x->i, 1); break;
+        case -19: { fmt_time("%H:%M:%S", (x->i) / 1000, 1);
+                    printf(".%03d", (x->i)%1000); break; }
         default: return krr("notimplemented");
     }
 
@@ -73,7 +73,7 @@ static K printitem(K x, int index)
 {
     switch (xt) {
         case  0: printq(kK(x)[index]); break;
-        case  1: showatom(kb, kG, x, index); break; 
+        case  1: showatom(kb, kG, x, index); break;
         case  4: showatom(kg, kG, x, index); break;
         case  5: showatom(kh, kH, x, index); break;
         case  6: showatom(ki, kI, x, index); break;
@@ -93,7 +93,7 @@ static K printitem(K x, int index)
 static K printlist(K x)
 {
     if (x->n == 1) printf(",");
-    
+
     for (int i = 0; i < x->n; i++)
         printitem(x, i);
 
@@ -104,7 +104,7 @@ static K printdict(K x)
 {
     K keys = kK(x)[0];
     K data = kK(x)[1];
- 
+
     for (int row = 0; row < keys->n; row++) {
         printf("%s\t| ", kS(keys)[row]);
         printitem(data, row);
@@ -122,9 +122,9 @@ static K printtable(K x)
 
     int colcount = columns->n;
     int rowcount = kK(rows)[0]->n;
- 
+
     for (int i = 0; i < colcount; i++)
-        printf("%s\t", kS(columns)[i]); 
+        printf("%s\t", kS(columns)[i]);
     printf("\n");
 
     for (int i = 0; i < rowcount; i++) {
@@ -147,7 +147,7 @@ K printq(K x)
     else if (xt == 98) result = printtable(x);
     else if (xt == 99) result = printdict(x);
     else result = krr("notimplemented");
- 
+
     printf("\n");
     return result;
 }
