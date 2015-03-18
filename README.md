@@ -1,6 +1,6 @@
 # Interfacing KDB+ with C
 
-The PDF documentation for this resource can be found on the [AquaQ Analytics][aquaqresources]
+The PDF documentation for this resource can be found [here][gitpdfdoc] and also on the [AquaQ Analytics][aquaqresources]
 website.
 
 Installation & Setup
@@ -27,6 +27,13 @@ Once the build is complete, navigate to the `bin` directory and execute:
 This will load the C shared object and bind the functions to names (*make* and *print*). Instructions
 and example commands should be displayed as soon as the the makeprint.q script loads.
 
+    q) print[1b]
+    1b
+    q) print[`a`b`c!1 2 3]
+    a   | 1
+    b   | 2
+    c   | 3
+
 Other Resources
 ---------------
 
@@ -37,5 +44,6 @@ This resource is intended to suppliment the existing Kx Wiki sections:
 
 [aquaqwebsite]: http://www.aquaq.co.uk  "AquaQ Analytics Website"
 [aquaqresources]: http://www.aquaq.co.uk/resources "AquaQ Analytics Website Resources"
+[gitpdfdoc]: https://github.com/markrooney/kdb-c-interface/blob/master/docs/InterfacingWithC.pdf
 [kxwikiinterface]: http://code.kx.com/wiki/Cookbook/InterfacingWithC "Kx Wiki Interfacing with C"
 [kxwikiextend]: http://code.kx.com/wiki/Cookbook/ExtendingWithC "Kx Wiki Extending with C"
