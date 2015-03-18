@@ -41,12 +41,35 @@ Once the build is complete, navigate to the `bin` directory and execute:
 This will load the C shared object and bind the functions to names (*make* and *print*). Instructions
 and example commands should be displayed as soon as the the makeprint.q script loads.
 
-    q) print[1b]
-    1b
+    ##
+    # makeprint.q
+    #
+    # Example q script that loads in two functions from the libqtoc shared object
+    # and makes them available as 'make' and 'print'.
+    #
+    # AquaQ Analytics
+    # kdb+ consultancy, training and support
+    #
+    # For questions, comments, requests or bug reports, please contact us
+    # w: www.aquaq.co.uk
+    # e: support@aquaq.co.uk
+    #
+    # examples:
+    #       print[1b] to print an atom
+    #       print[101b] to print a list
+    #       print[`a`b`c!1 2 3] to print a dictionary]
+    #       print[([] a:til 5; b:reverse `char$65+til 5)] to print a table
+    #
+    #       make[`b] to create a atom
+    #       make[`B] to create a list
+    #       make[`dictionary] to create a dictionary
+    #       make[`table] to create a table
     q) print[`a`b`c!1 2 3]
     a   | 1
     b   | 2
     c   | 3
+    q) make[`M]
+    2011.12 2014.05 2019.05 2018.07 2012.09m
 
 Other Resources
 ---------------
