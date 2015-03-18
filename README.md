@@ -17,6 +17,20 @@ and find the binary output in the `bin` directory.
 
         make install
 
+On Windows platforms you will need to have the msbuild.exe available on your path. CMake creates
+two Visual Studio projects that need to be built. The `INSTALL` project will not modify any of the
+code and will just move the binaries from the `build` directory to the `bin` directory.
+
+    msbuild ./ALL_BUILD.vcxproj /p:Configuration=Release
+    msbuild ./INSTALL.vcxproj /p:Configuration=Release
+
+The resulting directory after running a build should look like this:
+
+    bin/                    -- contains the library and makeprint.q
+    build/                  -- contains the makefile/visual studio projects
+    src/                    -- contains the source code
+    CMakeLists.txt
+
 Running the Examples
 --------------------
 
