@@ -22,28 +22,15 @@
 #include <ctype.h>
 #include <string.h>
 
-// KXVER needs to be defined before the k.h header file is
-// included. Setting this to 2 should allow this code to be
-// compiled for and used with version 2.x.
 #define KXVER 3
 #include "k.h"
 
-// macro to fetch a single byte from an array.
 #define charfrom(x) x[rand()%(sizeof((x)-1))]
-
-// macro to return the length of any array that is statically
-// allocated at compile time. (e.g alpha and types below)
 #define arraylen(x) (sizeof(x)/(sizeof(*(x))))
 
 static const char alpha[] = "abcdefghijklmnopqrstuvwxyz";
 static const char types[] = "bxhijefcs";
 
-////
-// Takes a reference to a buffer and a size and populates the
-// buffer with random alphabetic characters up until size
-// characters have been written. Ensures that the last byte
-// written to the buffer is a null/terminating character.
-//
 static char* gensym(char *buffer, size_t size)
 {
     int i;
@@ -54,13 +41,81 @@ static char* gensym(char *buffer, size_t size)
     return buffer;
 }
 
-////
-// Takes a symbol as a parameter that represents the short
-// name of the type and creates a random atom with that type.
-//
-// e.g. makeatom[`i] will create an integer in q
-//      makeatom[`c] will crreate a character in q
-//
+static long long randtimestamp()
+{
+    long long year = rand() % 10 + 2010;
+    long long month = rand() % 12 + 1;
+    long long day = rand() % 28 + 1;
+    long long hour = rand() % 24;
+    long long min = rand() % 60;
+    long long sec = rand() % 60;
+    long long nano = rand() % 1000000000;
+
+    return (((ymd(year,month,day)*24+hour)*60+min)*60+sec)*1000000000+nano;
+}
+
+static long long randdate()
+{
+    long long year = rand() % 10 + 2010;
+    long long month = rand() % 12 + 1;
+    long long day = rand() % 28 + 1;
+ 
+    return ymd(year, month, day);
+}
+
+static double randdatetime()
+{
+    double year = rand() % 10 + 2010;
+    double month = rand() % 12 + 1;
+    double day = rand() % 24;
+    double hour = rand() % 24;
+    double min = rand() % 60;
+    double sec = rand() % 60;
+    double mili = rand() % 1000;
+    return ymd(year,month,day)+(hour+(min+(sec+mili/1000)/60)/60)/24;
+}
+
+static long long randtimespan()
+{
+    long long day = rand() % 10;
+    long long hour = rand() % 24;
+    long long min = rand() % 60;
+    long long sec = rand() % 60;
+    long long nano = rand() % 1000000000;
+    return (((day*24+hour)*60+min)*60+sec)*1000000000+nano; 
+}
+
+static long long randtime()
+{
+    int hour = rand() % 24;
+    int min = rand() % 60;
+    int sec = rand() % 60;
+    int mili = rand() % 1000;
+    return ((hour*60+min)*60+sec)*1000+mili;
+}
+
+static long long randmonth()
+{
+    long long year = rand() % 10 + 2010;
+    long long month = rand() % 12 + 1;
+    return (year-2000)*12+month-1;
+}
+
+static long long randminute()
+{
+    int min = rand() % 60;
+    int sec = rand() % 60;
+    return min*60+sec;
+}
+
+static long long randsecond()
+{
+    int hour = rand() % 24;
+    int min = rand() % 60;
+    int sec = rand() % 60;
+    return (hour*60+min)*60+sec;
+}
+
 static K makeatom(char ch)
 {
     static char buffer[32];
@@ -75,62 +130,14 @@ static K makeatom(char ch)
         case 'f': return kf(rand() / 100.0);
         case 'c': return kc(charfrom(alpha)); 
         case 's': return ks(gensym(buffer, rand() % 32));
-        case 'p': {
-            long long year = rand() % 10 + 2010;
-            long long month = rand() % 12 + 1;
-            long long day = rand() % 28 + 1;
-            long long hour = rand() % 24;
-            long long min = rand() % 60;
-            long long sec = rand() % 60;
-            long long nano = rand() % 1000000000;
-            long long tq = (((ymd(year,month,day)*24+hour)*60+min)*60+sec)*1000000000+nano;
-            return ktj(-KP, tq); }
-        case 'm': {
-            long long year = rand() % 10 + 2010;
-            long long month = rand() % 12 + 1;
-            K result = ka(-KM);
-            result->i = (year-2000)*12+month-1;
-            return result; }
-        case 'd': {
-            long long year = rand() % 10 + 2010;
-            long long month = rand() % 12 + 1;
-            long long day = rand() % 28 + 1;
-            return kd(ymd(year,month,day)); }
-        case 'z': {
-            double year = rand() % 10 + 2010;
-            double month = rand() % 12 + 1;
-            double day = rand() % 24;
-            double hour = rand() % 24;
-            double min = rand() % 60;
-            double sec = rand() % 60;
-            double mili = rand() % 1000;
-            return kz(ymd(year,month,day)+(hour+(min+(sec+mili/1000)/60)/60)/24); }
-        case 'n': {
-            long long day = rand() % 10;
-            long long hour = rand() % 24;
-            long long min = rand() % 60;
-            long long sec = rand() % 60;
-            long long nano = rand() % 1000000000;
-            return ktj(-KN, (((day*24+hour)*60+min)*60+sec)*1000000000+nano); }
-        case 'u': {
-            int min = rand() % 60;
-            int sec = rand() % 60;
-            K result = ka(-KU);
-            result->i = min*60+sec;
-            return result; }
-        case 'v': {
-            int hour = rand() % 24;
-            int min = rand() % 60;
-            int sec = rand() % 60;
-            K result = ka(-KV);
-            result->i = (hour*60+min)*60+sec;
-            return result; }
-        case 't': {
-            int hour = rand() % 24;
-            int min = rand() % 60;
-            int sec = rand() % 60;
-            int mili = rand() % 1000;
-            return kt(((hour*60+min)*60+sec)*1000+mili); }
+        case 'p': return ktj(-KP, randtimestamp()); 
+        case 'm': { K result = ka(-KM); result->i = randmonth(); return result; }
+        case 'd': return kd(randdate());
+        case 'z': return kz(randdatetime());
+        case 'n': return ktj(-KN, randtimespan());
+        case 'u': { K result = ka(-KU); result->i = randminute(); return result; }
+        case 'v': { K result = ka(-KV); result->i = randsecond(); return result; }
+        case 't': return kt(randtime()); 
     }
 
     return krr("notimplemented");
@@ -138,11 +145,6 @@ static K makeatom(char ch)
 
 #define makeatoms(t,a,v) do { result = ktn(t,5); for (int i = 0; i < 5; i++) a(result)[i] = (v); } while (0)
 
-////
-// Creates a list of 5 atoms based on the character that is passed in as a parameter.
-// If the input character doesn't match a type, then a 'notimplemented' error will be
-// thrown.
-//
 static K makelist(char ch)
 {
     static char buffer[32];
@@ -158,16 +160,20 @@ static K makelist(char ch)
         case 'F': makeatoms(KF, kF, rand() / 100.0); break;
         case 'C': makeatoms(KC, kC, charfrom(alpha));  break;
         case 'S': makeatoms(KS, kS, gensym(buffer, rand() % 32)); break;
+        case 'P': makeatoms(KP, kJ, randtimestamp()); break;
+        case 'M': makeatoms(KM, kI, randmonth()); break;
+        case 'D': makeatoms(KD, kI, randdate()); break;
+        case 'Z': makeatoms(KZ, kF, randdatetime()); break;
+        case 'N': makeatoms(KN, kJ, randtimespan()); break;
+        case 'U': makeatoms(KU, kI, randminute()); break;
+        case 'V': makeatoms(KV, kI, randsecond()); break;
+        case 'T': makeatoms(KT, kI, randtime()); break;
         default: return krr("notimplemented");
     }
 
     return result;
 }
 
-////
-// Creates a dictionary with a list of each of the kdb+ atomic types as values. The
-// lists created are of length 5.
-//
 static K makedict(K x)
 {
     static char buffer[] = "t_ ";
@@ -185,15 +191,6 @@ static K makedict(K x)
     return xD(keys, values);
 }
 
-////
-// Takes a symbol as a parameter and attempts to create a random kdb+ type
-// that matches.
-//
-// e.g makeq[`i] will create an integer
-//     makeq[`I] will create an integer list
-//     makeq[`dictionary] will create a dictionary
-//     makeq[`table] will create a table
-//
 K makeq(K x)
 {
     if (xt != -11) return krr("type");

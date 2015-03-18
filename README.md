@@ -3,7 +3,8 @@
 The PDF documentation for this resource can be found on the [AquaQ Analytics][aquaqresources]
 website.
 
-# Installation & Setup
+Installation & Setup
+--------------------
 
 This project uses CMake 2.6+ to build across multiple platforms. It has been tested on Linux,
 Windows and Mac OSX. Execute the following commands on all platforms to create platform
@@ -16,7 +17,9 @@ and find the binary output in the `bin` directory.
 
         make install
 
-# Running the Examples
+Running the Examples
+--------------------
+
 Once the build is complete, navigate to the `bin` directory and execute:
 
     q makeprint.q
@@ -24,14 +27,15 @@ Once the build is complete, navigate to the `bin` directory and execute:
 This will load the C shared object and bind the functions to names (*make* and *print*). Instructions
 and example commands should be displayed as soon as the the makeprint.q script loads.
 
-# Other Resources
+Other Resources
+---------------
 
 This resource is intended to suppliment the existing Kx Wiki sections:
 
-+ [Interfacing With C][kxwikiinterface]
-+ [Extending With C][kxwikiextend]
+* [Interfacing With C][kxwikiinterface]
+* [Extending With C][kxwikiextend]
 
-[aquaqwebsite]: http://www.aquaq.co.uk
-[aquaqresources]: http://www.aquaq.co.uk/resources
-[kxwikiinterface]: http://code.kx.com/wiki/Cookbook/InterfacingWithC
-[kxwikiextend]: http://code.kx.com/wiki/Cookbook/ExtendingWithC
+[aquaqwebsite]: http://www.aquaq.co.uk  "AquaQ Analytics Website"
+[aquaqresources]: http://www.aquaq.co.uk/resources "AquaQ Analytics Website Resources"
+[kxwikiinterface]: http://code.kx.com/wiki/Cookbook/InterfacingWithC "Kx Wiki Interfacing with C"
+[kxwikiextend]: http://code.kx.com/wiki/Cookbook/ExtendingWithC "Kx Wiki Extending with C"
