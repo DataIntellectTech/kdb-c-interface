@@ -11,19 +11,23 @@ Installation & Setup
 --------------------
 
 ### Extra Resources
-You will need to download the `k.h` header file on all platforms and on Windows you will need to
+You will need to download the `k.h` header file on all platforms
 
 This project uses CMake 2.6+ to build across multiple platforms. It has been tested on Linux,
 Windows and Mac OSX. Execute the following commands on all platforms to create platform
 appropriate build files within the `build` directory.
 
-    mkdir build; cd build; cmake ..
+```sh
+mkdir build; cd build; cmake ..
+```
 
 ### Linux and OSX
 On Linux and Mac OSX platforms, you just need to run make install to complete the build process
 and find the binary output in the `bin` directory.
 
-    make install && cd ../bin
+```sh
+make install && cd ../bin
+```
 
 ### Windows
 
