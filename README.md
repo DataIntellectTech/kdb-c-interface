@@ -5,7 +5,6 @@ object is built as the output and a q script is provided that will show how to l
 dynamically.
 
 <img src="docs/icons/windows.png" height="16px">
-<img src="docs/icons/apple.png" height="16px">
 <img src="docs/icons/linux.png" height="16px">
 
 The PDF documentation for this resource can be found [here][gitpdfdoc] and also on the [AquaQ Analytics][aquaqresources]
@@ -17,28 +16,29 @@ Installation & Setup
 ### Extra Resources
 You will need to download the `k.h` header file on all platforms
 
-This project uses CMake 2.6+ to build across multiple platforms. It has been tested on Linux,
-Windows and Mac OSX. Execute the following commands on all platforms to create platform
-appropriate build files within the `build` directory.
+This project uses CMake 2.6+ to build across multiple platforms. It has been tested on Linux and
+Windows. Execute the following commands on all platforms to create platform appropriate build
+files within the `build` directory.
 
 ```sh
 mkdir build; cd build; cmake ..
 ```
 
-### <img src="docs/icons/linux.png" height="16px"> Linux & <img src="docs/icons/apple.png" height="16px"> Mac OSX
+### <img src="docs/icons/linux.png" height="16px"> Building on Linux
 
-On Linux and Mac OSX, you just need to run make install to complete the build process
-and find the binary output in the `bin` directory.
+On Linux, you just need to run make install to complete the build process
+and find the binary output in the `../bin` directory.
 
 ```sh
 make install && cd ../bin
 ```
 
-### <img src="docs/icons/windows.png" height="16px"> Windows
+### <img src="docs/icons/windows.png" height="16px"> Building on Windows
 
 On Windows platforms you will need to have the msbuild.exe available on your path. CMake creates
 two Visual Studio projects that need to be built. The `INSTALL` project will not modify any of the
-code and will just move the binaries from the `build` directory to the `bin` directory.
+code and will just move the binaries from the `../build` directory to the `../bin` directory. An
+extra `libqtoc.lib` file will be produced on Windows, which can be ignored after the build process.
 
 ```bat
 msbuild ./ALL_BUILD.vcxproj /p:Configuration=Release
@@ -46,15 +46,15 @@ msbuild ./INSTALL.vcxproj /p:Configuration=Release
 cd ../bin
 ```
 
+Running the Examples
+--------------------
+
 The resulting directory after running a build should look like this:
 
-    bin/                    -- contains the library and makeprint.q
+    bin/                    -- contains the libqtoc.[dll/so] library and makeprint.q
     build/                  -- contains the makefile/visual studio projects
     src/                    -- contains the source code
     CMakeLists.txt
-
-Running the Examples
---------------------
 
 Once the build is complete, navigate to the `bin` directory and execute:
 
