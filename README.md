@@ -4,6 +4,10 @@ This project demonstrates how to marshall data between kdb+ and C using the Kx p
 object is built as the output and a q script is provided that will show how to load the C functions into kdb+
 dynamically.
 
+<img src="docs/icons/windows.png" height="16px">
+<img src="docs/icons/apple.png" height="16px">
+<img src="docs/icons/linux.png" height="16px">
+
 The PDF documentation for this resource can be found [here][gitpdfdoc] and also on the [AquaQ Analytics][aquaqresources]
 website.
 
@@ -21,15 +25,16 @@ appropriate build files within the `build` directory.
 mkdir build; cd build; cmake ..
 ```
 
-### Linux and OSX
-On Linux and Mac OSX platforms, you just need to run make install to complete the build process
+### <img src="docs/icons/linux.png" height="16px"> Linux & <img src="docs/icons/apple.png" height="16px"> Mac OSX
+
+On Linux and Mac OSX, you just need to run make install to complete the build process
 and find the binary output in the `bin` directory.
 
 ```sh
 make install && cd ../bin
 ```
 
-### Windows
+### <img src="docs/icons/windows.png" height="16px"> Windows
 
 On Windows platforms you will need to have the msbuild.exe available on your path. CMake creates
 two Visual Studio projects that need to be built. The `INSTALL` project will not modify any of the
