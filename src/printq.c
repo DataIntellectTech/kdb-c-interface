@@ -49,7 +49,7 @@ static K printatom(K x)
         case  -7: printf("%lld", x->j); break;
         case  -8: printf("%.2f", x->e); break;
         case  -9: printf("%.2f", x->f); break;
-        case -10: printf("\"%c\"", x->i); break;
+        case -10: printf("\"%c\"", x->g); break;
         case -11: printf("`%s", x->s); break;
         case -12: fmt_time("%Y.%m.%dD%H:%M:%S.", ((x->j) / 8.64e13 + 10957)*8.64e4, 0); break;
         case -13: printf("%04d.%02d", (x->i)/12+2000, (x->i)%12+1); break;
@@ -106,7 +106,8 @@ static K printdict(K x)
     K data = kK(x)[1];
 
     for (int row = 0; row < keys->n; row++) {
-        printf("%s\t| ", kS(keys)[row]);
+        printitem(keys, row);
+        printf("| ");
         printitem(data, row);
         if (row < keys->n - 1) printf("\n");
     }
