@@ -11,7 +11,8 @@ Installation & Setup
 --------------------
 
 ### Extra Resources
-You will need to download the `k.h` header file on all platforms
+You will need to download the `q.lib` file from the code.kx.com/svn repository for Windows platforms
+and place it in the w32/ directory.
 
 This project uses CMake 2.6+ to build across multiple platforms. It has been tested on Linux and
 Windows. Execute the following commands on all platforms to create platform appropriate build
