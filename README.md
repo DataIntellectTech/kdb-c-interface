@@ -4,9 +4,6 @@ This project demonstrates how to marshall data between kdb+ and C using the Kx p
 object is built as the output and a q script is provided that will show how to load the C functions into kdb+
 dynamically.
 
-<img src="docs/icons/windows.png" height="16px">
-<img src="docs/icons/linux.png" height="16px">
-
 The PDF documentation for this resource can be found [here][gitpdfdoc] and also on the [AquaQ Analytics][aquaqresources]
 website.
 
@@ -94,8 +91,6 @@ c   | 3
 q) make[`M]
 2011.12 2014.05 2019.05 2018.07 2012.09m
 ```
-Communication with KDB+ processes
----------------------------------
 
 Other Resources
 ---------------
